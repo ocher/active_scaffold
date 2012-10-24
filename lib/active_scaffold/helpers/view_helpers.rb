@@ -180,7 +180,9 @@ module ActiveScaffold
           link.cached_url
         else
           url = url_for(action_link_url_options(link, record))
-          link.cached_url = url unless link.dynamic_parameters.is_a?(Proc)
+          if !link.dynamic_parameters.is_a?(Proc) && params.keys.select {|k| k =~ /_id$/}.size == 0
+            link.cached_url = url
+          end          
           url
         end
         
